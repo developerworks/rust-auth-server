@@ -6,8 +6,8 @@ use lettre::{Message, SmtpTransport, Transport};
 
 pub fn send_invitation(invitation: &Invitation) -> Result<(), ServiceError> {
 
-    let mailer_account = std::env::var("MAILER_ACCOUNT").expect("MAILER_ACCOUNT must be set");
-    let mailer_password = std::env::var("MAILER_PASSWORD").expect("MAILER_PASSWORD must be set");
+    let smtp_account = std::env::var("SMTP_ACCOUNT").expect("SMTP_ACCOUNT must be set");
+    let smtp_password = std::env::var("SMTP_PASSWORD").expect("SMTP_PASSWORD must be set");
     let mail_from = std::env::var("MAIL_FROM").expect("MAIL_FROM must be set");
     let mail_to = std::env::var("MAIL_TO").expect("MAIL_TO must be set");
 
@@ -38,7 +38,7 @@ pub fn send_invitation(invitation: &Invitation) -> Result<(), ServiceError> {
         .body(email_body)
         .unwrap();
 
-    let creds = Credentials::new(mailer_account, mailer_password);
+    let creds = Credentials::new(smtp_account, smtp_password);
 
     let mailer = SmtpTransport::relay("smtp.163.com")
         .unwrap()

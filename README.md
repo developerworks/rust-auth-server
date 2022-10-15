@@ -67,7 +67,7 @@ curl --request POST \
 
 
 curl --request POST \
-  --url http://localhost:3000/api/register/c5d567a5-1594-48a8-bcd4-2edf195c0b1f \
+  --url http://localhost:3000/api/register/5068a9fc-529d-4f26-93e7-a53bb855e249 \
   --header 'content-type: application/json' \
   --data '{"email":"developerworks@163.com", "password":"root"}'
 
@@ -76,4 +76,14 @@ curl -i --request POST \
   --url http://localhost:3000/api/auth \
   --header 'content-type: application/json' \
   --data '{"email": "developerworks@163.com","password":"root"}'
+```
+## ENV vars
+
+```
+DATABASE_URL=mysql://root:root@localhost/rust_auth_server
+SMTP_ACCOUNT=""
+SMTP_PASSWORD=""
+MAIL_FROM=""
+MAIL_TO=""
+SECRET_KEY="3VFQuA1LkV92OB8QAtcbnmnB4MMcKHP1Aunoe8T5guL"
 ```
