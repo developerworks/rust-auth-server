@@ -1,6 +1,6 @@
 use actix_web::{error::ResponseError, HttpResponse};
 use derive_more::Display;
-use diesel::result::{DatabaseErrorKind, Error as DBError};
+use diesel::result::{DatabaseErrorKind, Error as DbError};
 use std::convert::From;
 use uuid::Error as ParseError;
 
@@ -31,27 +31,27 @@ impl ResponseError for ServiceError {
 
 impl From<ParseError> for ServiceError {
     fn from(_: ParseError) -> Self {
-        ServiceError::BadRequest("Invalid UUID".into())
+        Self::BadRequest("Invalid UUID".into())
     }
 }
 
 impl From<r2d2::Error> for ServiceError {
     fn from(_: r2d2::Error) -> Self {
-        ServiceError::InternalServerError
+        Self::InternalServerError
     }
 }
 
-impl From<DBError> for ServiceError {
-    fn from(error: DBError) -> Self {
+impl From<DbError> for ServiceError {
+    fn from(error: DbError) -> Self {
         match error {
-            DBError::DatabaseError(kind, info) => {
+            DbError::DatabaseError(kind, info) => {
                 if let DatabaseErrorKind::UniqueViolation = kind {
                     let message = info.details().unwrap_or_else(|| info.message()).to_string();
-                    return ServiceError::BadRequest(message);
+                    return Self::BadRequest(message);
                 }
-                ServiceError::InternalServerError
+                Self::InternalServerError
             }
-            _ => ServiceError::InternalServerError,
+            _ => Self::InternalServerError,
         }
     }
 }
